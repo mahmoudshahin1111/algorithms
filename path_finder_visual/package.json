@@ -1,0 +1,14 @@
+{
+  "name": "path_finder_visual",
+  "version": "1.0.0",
+  "description": "path finding algo ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mahmoud shahin",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.5.1"
+  }
+}
