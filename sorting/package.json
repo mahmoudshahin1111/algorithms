@@ -1,0 +1,19 @@
+{
+  "name": "sorting",
+  "version": "1.0.0",
+  "description": "Mahmoud Shahin",
+  "main": "/src/index.js",
+  "scripts": {},
+  "keywords": [
+    "sorting",
+    "mahmoud",
+    "shahin",
+    "mahmoud shahin"
+  ],
+  "author": "mahmoud_shahin",
+  "license": "MIT",
+  "dependencies": {
+    "@types/jquery": "^3.5.4",
+    "jquery": "^3.5.1"
+  }
+}
