@@ -1,9 +1,65 @@
-// TODO:: get array of elements
-// TODO:: draw svg for every element with it's attributes (value,width,height,color)
-// TODO:: render view
-// TODO:: *dq sorting elements by changing it's attributes because it's linked to svg
-// TODO:: refresh render
-// TODO:: ;-) celebrate
+var AlgorithmElement = /** @class */ (function () {
+    function AlgorithmElement(value, posIndex) {
+        this.id = "id_" + Math.floor(Math.random() * 999999);
+        this.name = "";
+        this.value = value;
+        this.width = 20;
+        this.height = value;
+        this.posIndex = posIndex;
+        this.x = posIndex * this.width;
+        this.y = 0;
+    }
+    Object.defineProperty(AlgorithmElement.prototype, "text", {
+        get: function () {
+            return {
+                content: this.getValue().toString(),
+                pos: {
+                    x: 430 - this.getX(),
+                    y: 550 - this.getHeight()
+                }
+            };
+        },
+        enumerable: false,
+        configurable: true
+    });
+    AlgorithmElement.prototype.getId = function () {
+        return this.id;
+    };
+    AlgorithmElement.prototype.getColor = function () {
+        return ("#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"));
+    };
+    AlgorithmElement.prototype.getHeight = function () {
+        return this.height;
+    };
+    AlgorithmElement.prototype.setHeight = function (value) {
+        this.height = value;
+    };
+    AlgorithmElement.prototype.getWidth = function () {
+        return this.width;
+    };
+    AlgorithmElement.prototype.setWidth = function (value) {
+        this.width = value;
+    };
+    AlgorithmElement.prototype.getValue = function () {
+        return this.value;
+    };
+    AlgorithmElement.prototype.setValue = function (value) {
+        this.value = value;
+    };
+    AlgorithmElement.prototype.getX = function () {
+        return this.posIndex * this.width;
+    };
+    AlgorithmElement.prototype.getY = function () {
+        return this.y;
+    };
+    AlgorithmElement.prototype.setPosIndex = function (v) {
+        this.posIndex = v;
+    };
+    AlgorithmElement.prototype.getPosIndex = function () {
+        return this.posIndex;
+    };
+    return AlgorithmElement;
+}());
 /* Quick Sorting */
 var QuickSorting = /** @class */ (function () {
     function QuickSorting() {
@@ -49,8 +105,9 @@ var QuickSorting = /** @class */ (function () {
         var html = "";
         for (var _i = 0, _a = this.elements; _i < _a.length; _i++) {
             var el = _a[_i];
-            var algElVector = "<rect id=\"" + el.getId() + "\" style=\"fill:" + el.getColor() + "\" x='" + el.getX() + "' y='" + el.getY() + "' width='" + el.getWidth() + "' height='" + el.getHeight() + "' data-value='" + el.value + "' data-height='" + el.getHeight() + "' data-width='" + el.getWidth() + "' class=\"alg_vector\" />";
-            html += algElVector;
+            var rect = "<rect id=\"" + el.getId() + "\" style=\"fill:" + el.getColor() + "\" x='" + el.getX() + "' y='" + el.getY() + "' width='" + el.getWidth() + "' height='" + el.getHeight() + "' data-value='" + el.value + "' data-height='" + el.getHeight() + "' data-width='" + el.getWidth() + "' class=\"alg_vector\" />";
+            var text = "  <text class='element__text' x=\"" + el.text.pos.x + "\" y=\"" + el.text.pos.y + "\" class=\"small\">" + el.text.content + "</text> ";
+            html += text + rect;
         }
         $(this.svgEl).html(html);
     };
@@ -59,6 +116,8 @@ var QuickSorting = /** @class */ (function () {
             var el = this.elements[i];
             el.setPosIndex(i);
             var e = $("#" + el.getId());
+            e.prev('.element__text').attr('x', el.text.pos.x);
+            e.prev('.element__text').attr('y', el.text.pos.y);
             e.attr("x", el.getX());
             e.attr("y", el.getY());
             e.attr("width", el.getWidth());
@@ -113,7 +172,8 @@ var QuickSorting = /** @class */ (function () {
     };
     QuickSorting.prototype.reset = function () {
         this.running = false;
-        this.init([]);
+        this.elements = [];
+        this.partitions = [];
     };
     /**
      * @returns {boolean}
@@ -122,56 +182,6 @@ var QuickSorting = /** @class */ (function () {
         return this.running;
     };
     return QuickSorting;
-}());
-var AlgorithmElement = /** @class */ (function () {
-    function AlgorithmElement(value, posIndex) {
-        this.id = "id_" + Math.floor(Math.random() * 999999);
-        this.name = "";
-        this.value = value;
-        this.width = 10;
-        this.height = (value + 2) * 2;
-        this.posIndex = posIndex;
-        this.x = posIndex * this.width;
-        this.y = 0;
-    }
-    AlgorithmElement.prototype.getId = function () {
-        return this.id;
-    };
-    AlgorithmElement.prototype.getColor = function () {
-        return ("#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"));
-    };
-    AlgorithmElement.prototype.getHeight = function () {
-        return this.height;
-    };
-    AlgorithmElement.prototype.setHeight = function (value) {
-        this.height = value;
-    };
-    AlgorithmElement.prototype.getWidth = function () {
-        return this.width;
-    };
-    AlgorithmElement.prototype.setWidth = function (value) {
-        this.width = value;
-    };
-    AlgorithmElement.prototype.getValue = function () {
-        return this.value;
-    };
-    AlgorithmElement.prototype.setValue = function (value) {
-        this.value = value;
-    };
-    AlgorithmElement.prototype.getX = function () {
-        return this.x;
-    };
-    AlgorithmElement.prototype.getY = function () {
-        return this.y;
-    };
-    AlgorithmElement.prototype.setPosIndex = function (v) {
-        this.posIndex = v;
-        this.x = this.posIndex * this.width;
-    };
-    AlgorithmElement.prototype.getPosIndex = function () {
-        return this.posIndex;
-    };
-    return AlgorithmElement;
 }());
 var Partition = /** @class */ (function () {
     function Partition(elementsIndexes) {
@@ -185,6 +195,7 @@ var Partition = /** @class */ (function () {
 var MergeSorting = /** @class */ (function () {
     function MergeSorting() {
         this.sortingMatrix = [];
+        this.sortingMatrixIndex = 0;
         this.elements = [];
         this.svgEl = document.getElementById("algorithm_svg");
         this.running = false;
@@ -221,8 +232,9 @@ var MergeSorting = /** @class */ (function () {
         var html = "";
         for (var _i = 0, _a = this.elements; _i < _a.length; _i++) {
             var el = _a[_i];
-            var algElVector = "<rect id=\"" + el.getId() + "\" style=\"fill:" + el.getColor() + "\" x='" + el.getX() + "' y='" + el.getY() + "' width='" + el.getWidth() + "' height='" + el.getHeight() + "' data-value='" + el.value + "' data-height='" + el.getHeight() + "' data-width='" + el.getWidth() + "' class=\"alg_vector\" />";
-            html += algElVector;
+            var rect = "<rect id=\"" + el.getId() + "\" style=\"fill:" + el.getColor() + "\" x='" + el.getX() + "' y='" + el.getY() + "' width='" + el.getWidth() + "' height='" + el.getHeight() + "' data-value='" + el.value + "' data-height='" + el.getHeight() + "' data-width='" + el.getWidth() + "' class=\"alg_vector\" />";
+            var text = "  <text class='element__text' x=\"" + el.text.pos.x + "\" y=\"" + el.text.pos.y + "\" class=\"small\">" + el.text.content + "</text> ";
+            html += text + rect;
         }
         $(this.svgEl).html(html);
     };
@@ -231,6 +243,8 @@ var MergeSorting = /** @class */ (function () {
             var el = this.elements[i];
             el.setPosIndex(i);
             var e = $("#" + el.getId());
+            e.prev('.element__text').attr('x', el.text.pos.x);
+            e.prev('.element__text').attr('y', el.text.pos.y);
             e.attr("x", el.getX());
             e.attr("y", el.getY());
             e.attr("width", el.getWidth());
@@ -238,59 +252,62 @@ var MergeSorting = /** @class */ (function () {
         }
     };
     MergeSorting.prototype.sorting = function () {
-        console.log("sorting loping is working now");
-        console.log(this.sortingMatrix);
-        for (var i = 0; i < this.sortingMatrix.length; i++) {
-            var arr = this.sortingMatrix[i];
-            if (arr) {
-                var nextArr = [];
-                for (var pi = 0; pi < arr.length; pi = pi + 2) {
-                    var x = 0;
-                    var y = 0;
-                    var newPart = [];
-                    var arrFP = arr[pi];
-                    var arrSP = arr[pi + 1];
-                    if (arrSP) {
-                        for (var fpi = x; fpi < arrFP.length; fpi++) {
-                            var arrFPE = arrFP[fpi];
-                            for (var spi = y; spi < arrSP.length; spi++) {
-                                var arrSPE = arrSP[spi];
-                                if (arrFPE.value < arrSPE.value) {
-                                    x = x + 1;
-                                    newPart.push(arrFPE);
-                                    break;
-                                }
-                                else {
-                                    y = y + 1;
-                                    newPart.push(arrSPE);
-                                }
+        var arr = this.sortingMatrix[this.sortingMatrixIndex];
+        var nextArr = [];
+        for (var pi = 0; pi < arr.length; pi = pi + 2) {
+            var x = 0;
+            var y = 0;
+            var newPart = [];
+            var arrFP = arr[pi];
+            var arrSP = arr[pi + 1];
+            if (arrSP) {
+                for (var fpi = x; fpi < arrFP.length; fpi++) {
+                    var arrFPE = arrFP[fpi];
+                    for (var spi = y; spi < arrSP.length; spi++) {
+                        var arrSPE = arrSP[spi];
+                        if (arrSPE.value < arrFPE.value) {
+                            y = y + 1;
+                            newPart.push(arrSPE);
+                            var spe = this.elements[arrSPE.getPosIndex()];
+                            for (var elI = arrSPE.getPosIndex(); elI > arrFPE.getPosIndex(); elI--) {
+                                this.elements[elI] = this.elements[elI - 1];
+                                this.elements[elI].setPosIndex(elI - 1);
                             }
+                            this.elements[arrFPE.getPosIndex()] = spe;
+                            spe.setPosIndex(arrFPE.getPosIndex());
                         }
-                        if (x < arrFP.length) {
-                            for (var h1 = x; h1 < arrFP.length; h1++) {
-                                newPart.push(arrFP[h1]);
-                            }
+                        else if (arrSPE.value > arrFPE.value) {
+                            x = x + 1;
+                            newPart.push(arrFPE);
+                            break;
                         }
-                        if (y < arrSP.length) {
-                            for (var h1 = y; h1 < arrSP.length; h1++) {
-                                newPart.push(arrSP[h1]);
-                            }
-                        }
-                    }
-                    else {
-                        newPart = arrFP;
-                    }
-                    nextArr.push(newPart);
-                }
-                if (nextArr) {
-                    this.sortingMatrix.push(nextArr);
-                    if (nextArr[0].length == this.sortingMatrix[0].length) {
-                        this.stop();
-                        console.log(this.sortingMatrix);
-                        this.elements = this.sortingMatrix[this.sortingMatrix.length - 1][0];
-                        break;
                     }
                 }
+                if (x < arrFP.length) {
+                    for (var h1 = x; h1 < arrFP.length; h1++) {
+                        newPart.push(arrFP[h1]);
+                    }
+                }
+                if (y < arrSP.length) {
+                    for (var h1 = y; h1 < arrSP.length; h1++) {
+                        newPart.push(arrSP[h1]);
+                    }
+                }
+            }
+            else {
+                newPart = arrFP;
+            }
+            nextArr.push(newPart);
+        }
+        if (nextArr) {
+            this.sortingMatrix.push(nextArr);
+            if (nextArr[0].length == this.sortingMatrix[0].length) {
+                this.stop();
+                console.log(this.elements, this.sortingMatrix);
+                return;
+            }
+            if (this.sortingMatrixIndex < this.sortingMatrix.length) {
+                this.sortingMatrixIndex++;
             }
         }
     };
@@ -305,6 +322,9 @@ var MergeSorting = /** @class */ (function () {
         this.sortingMatrix = [];
         this.elements = [];
         this.init([]);
+        this.sortingMatrixIndex = 0;
+        this.logMsg = '';
+        this.tick = 0;
     };
     /**
      * @returns {boolean}
@@ -314,16 +334,19 @@ var MergeSorting = /** @class */ (function () {
     };
     return MergeSorting;
 }());
+/* Config */
 var config = {
-    fps: 10,
+    fps: 100,
     algorithm: new MergeSorting()
 };
+/* Actions */
 function handleStartButtonClicked(event) {
     var randomNumbers = [];
-    for (var i = 20; i < 100; i++) {
+    for (var i = 20; i < 40; i++) {
         var randomNum = Math.ceil(Math.acos(Math.random()) * (i * 2));
         randomNumbers.push(randomNum);
     }
+    config.algorithm.reset();
     config.algorithm.init(randomNumbers);
     config.algorithm.start();
 }

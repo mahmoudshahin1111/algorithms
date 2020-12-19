@@ -1,9 +1,82 @@
-// TODO:: get array of elements
-// TODO:: draw svg for every element with it's attributes (value,width,height,color)
-// TODO:: render view
-// TODO:: *dq sorting elements by changing it's attributes because it's linked to svg
-// TODO:: refresh render
-// TODO:: ;-) celebrate
+
+/* Decelerations */
+interface ElementText {
+  content: string,
+  pos: {
+    x: number;
+    y: number;
+  }
+}
+
+class AlgorithmElement {
+  id: string;
+  name: string;
+  value: number;
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+  public get text(): ElementText {
+    return {
+      content: this.getValue().toString(),
+      pos: {
+        x: 430 - this.getX(),
+        y: 550 - this.getHeight()
+      }
+    };
+  }
+
+  posIndex: number;
+  constructor(value, posIndex) {
+    this.id = "id_" + Math.floor(Math.random() * 999999);
+    this.name = "";
+    this.value = value;
+    this.width = 20;
+    this.height = value;
+    this.posIndex = posIndex;
+    this.x = posIndex * this.width;
+    this.y = 0;
+  }
+  getId() {
+    return this.id;
+  }
+  getColor() {
+    return (
+      "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")
+    );
+  }
+  getHeight() {
+    return this.height;
+  }
+  setHeight(value) {
+    this.height = value;
+  }
+  getWidth() {
+    return this.width;
+  }
+  setWidth(value) {
+    this.width = value;
+  }
+  getValue() {
+    return this.value;
+  }
+  setValue(value) {
+    this.value = value;
+  }
+  getX() {
+    return this.posIndex * this.width;
+  }
+  getY() {
+    return this.y;
+  }
+  setPosIndex(v: number) {
+    this.posIndex = v;
+  }
+  getPosIndex() {
+    return this.posIndex;
+  }
+
+}
 
 interface SortingAlgorithm {
   running: boolean;
@@ -73,10 +146,10 @@ class QuickSorting implements SortingAlgorithm {
   draw() {
     let html = "";
     for (const el of this.elements) {
-      const algElVector = `<rect id="${el.getId()}" style="fill:${el.getColor()}" x='${el.getX()}' y='${el.getY()}' width='${el.getWidth()}' height='${el.getHeight()}' data-value='${
-        el.value
-      }' data-height='${el.getHeight()}' data-width='${el.getWidth()}' class="alg_vector" />`;
-      html += algElVector;
+      const rect = `<rect id="${el.getId()}" style="fill:${el.getColor()}" x='${el.getX()}' y='${el.getY()}' width='${el.getWidth()}' height='${el.getHeight()}' data-value='${el.value
+        }' data-height='${el.getHeight()}' data-width='${el.getWidth()}' class="alg_vector" />`;
+      const text = `  <text class='element__text' x="${el.text.pos.x}" y="${el.text.pos.y}" class="small">${el.text.content}</text> `;
+      html += text + rect;
     }
     $(this.svgEl).html(html);
   }
@@ -85,6 +158,8 @@ class QuickSorting implements SortingAlgorithm {
       const el = this.elements[i];
       el.setPosIndex(i);
       const e = $("#" + el.getId());
+      e.prev('.element__text').attr('x', el.text.pos.x);
+      e.prev('.element__text').attr('y', el.text.pos.y);
       e.attr("x", el.getX());
       e.attr("y", el.getY());
       e.attr("width", el.getWidth());
@@ -101,13 +176,13 @@ class QuickSorting implements SortingAlgorithm {
             partition.elementsIndexes[partition.pivotIndex]
           ].getValue() &&
           partition.elementsIndexes[i] <
-            partition.elementsIndexes[partition.pivotIndex]) ||
+          partition.elementsIndexes[partition.pivotIndex]) ||
         (this.elements[partition.elementsIndexes[i]].getValue() <=
           this.elements[
             partition.elementsIndexes[partition.pivotIndex]
           ].getValue() &&
           partition.elementsIndexes[i] >
-            partition.elementsIndexes[partition.pivotIndex])
+          partition.elementsIndexes[partition.pivotIndex])
       ) {
         swapped = true;
       }
@@ -148,7 +223,8 @@ class QuickSorting implements SortingAlgorithm {
   }
   reset() {
     this.running = false;
-    this.init([]);
+    this.elements = [];
+    this.partitions = [];
   }
   /**
    * @returns {boolean}
@@ -158,65 +234,6 @@ class QuickSorting implements SortingAlgorithm {
   }
 }
 
-class AlgorithmElement {
-  id: string;
-  name: string;
-  value: number;
-  width: number;
-  height: number;
-  x: number;
-  y: number;
-  posIndex: number;
-  constructor(value, posIndex) {
-    this.id = "id_" + Math.floor(Math.random() * 999999);
-    this.name = "";
-    this.value = value;
-    this.width = 10;
-    this.height = (value + 2) * 2;
-    this.posIndex = posIndex;
-    this.x = posIndex * this.width;
-    this.y = 0;
-  }
-  getId() {
-    return this.id;
-  }
-  getColor() {
-    return (
-      "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")
-    );
-  }
-  getHeight() {
-    return this.height;
-  }
-  setHeight(value) {
-    this.height = value;
-  }
-  getWidth() {
-    return this.width;
-  }
-  setWidth(value) {
-    this.width = value;
-  }
-  getValue() {
-    return this.value;
-  }
-  setValue(value) {
-    this.value = value;
-  }
-  getX() {
-    return this.x;
-  }
-  getY() {
-    return this.y;
-  }
-  setPosIndex(v) {
-    this.posIndex = v;
-    this.x = this.posIndex * this.width;
-  }
-  getPosIndex() {
-    return this.posIndex;
-  }
-}
 
 class Partition {
   elementsIndexes: number[];
@@ -238,6 +255,7 @@ class MergeSorting implements SortingAlgorithm {
   tick: number;
   logMsg: string;
   sortingMatrix: Array<Array<Array<AlgorithmElement>>> = [];
+  sortingMatrixIndex: number = 0;
   constructor() {
     this.elements = [];
     this.svgEl = document.getElementById("algorithm_svg");
@@ -245,7 +263,6 @@ class MergeSorting implements SortingAlgorithm {
     this.tick = 0;
   }
   init(arr: Array<number>) {
-
     for (let i = 0; i < arr.length; i++) {
       const algEl = new AlgorithmElement(arr[i], i);
       this.elements.push(algEl);
@@ -274,10 +291,10 @@ class MergeSorting implements SortingAlgorithm {
   draw() {
     let html = "";
     for (const el of this.elements) {
-      const algElVector = `<rect id="${el.getId()}" style="fill:${el.getColor()}" x='${el.getX()}' y='${el.getY()}' width='${el.getWidth()}' height='${el.getHeight()}' data-value='${
-        el.value
-      }' data-height='${el.getHeight()}' data-width='${el.getWidth()}' class="alg_vector" />`;
-      html += algElVector;
+      const rect = `<rect id="${el.getId()}" style="fill:${el.getColor()}" x='${el.getX()}' y='${el.getY()}' width='${el.getWidth()}' height='${el.getHeight()}' data-value='${el.value
+        }' data-height='${el.getHeight()}' data-width='${el.getWidth()}' class="alg_vector" />`;
+      const text = `  <text class='element__text' x="${el.text.pos.x}" y="${el.text.pos.y}" class="small">${el.text.content}</text> `;
+      html += text + rect;
     }
     $(this.svgEl).html(html);
   }
@@ -286,6 +303,8 @@ class MergeSorting implements SortingAlgorithm {
       const el = this.elements[i];
       el.setPosIndex(i);
       const e = $("#" + el.getId());
+      e.prev('.element__text').attr('x', el.text.pos.x);
+      e.prev('.element__text').attr('y', el.text.pos.y);
       e.attr("x", el.getX());
       e.attr("y", el.getY());
       e.attr("width", el.getWidth());
@@ -293,58 +312,64 @@ class MergeSorting implements SortingAlgorithm {
     }
   }
   sorting() {
-    console.log("sorting loping is working now");
-    console.log(this.sortingMatrix);
-    for (let i = 0; i < this.sortingMatrix.length; i++) {
-      const arr = this.sortingMatrix[i];
-      if (arr) {
-        const nextArr = [];
-        for (let pi = 0; pi < arr.length; pi = pi + 2) {
-          let x = 0;
-          let y = 0;
-          let newPart = [];
-          const arrFP = arr[pi];
-          const arrSP = arr[pi + 1];
-          if (arrSP) {
-            for (let fpi = x; fpi < arrFP.length; fpi++) {
-              const arrFPE = arrFP[fpi];
-              for (let spi = y; spi < arrSP.length; spi++) {
-                const arrSPE = arrSP[spi];
-                if (arrFPE.value < arrSPE.value) {
-                  x = x + 1;
-                  newPart.push(arrFPE);
-                  break;
-                } else {
-                  y = y + 1;
-                  newPart.push(arrSPE);
-                }
+    const arr = this.sortingMatrix[this.sortingMatrixIndex];
+
+    const nextArr = [];
+    for (let pi = 0; pi < arr.length; pi = pi + 2) {
+      let x = 0;
+      let y = 0;
+      let newPart = [];
+      const arrFP = arr[pi];
+      const arrSP = arr[pi + 1];
+      if (arrSP) {
+        for (let fpi = x; fpi < arrFP.length; fpi++) {
+          const arrFPE = arrFP[fpi];
+          for (let spi = y; spi < arrSP.length; spi++) {
+            const arrSPE = arrSP[spi];
+            if (arrSPE.value < arrFPE.value) {
+              y = y + 1;
+              newPart.push(arrSPE);
+              const spe = this.elements[arrSPE.getPosIndex()];
+              for (let elI = arrSPE.getPosIndex(); elI > arrFPE.getPosIndex(); elI--) {
+                this.elements[elI] = this.elements[elI - 1];
+                this.elements[elI].setPosIndex(elI - 1);
+
               }
+              this.elements[arrFPE.getPosIndex()] = spe;
+              spe.setPosIndex(arrFPE.getPosIndex());
+            } else if (arrSPE.value > arrFPE.value) {
+              x = x + 1;
+              newPart.push(arrFPE);
+              break;
             }
-            if (x < arrFP.length) {
-              for (let h1 = x; h1 < arrFP.length; h1++) {
-                newPart.push(arrFP[h1]);
-              }
-            }
-            if (y < arrSP.length) {
-              for (let h1 = y; h1 < arrSP.length; h1++) {
-                newPart.push(arrSP[h1]);
-              }
-            }
-          } else {
-            newPart = arrFP;
-          }
-          nextArr.push(newPart);
-        }
-        if (nextArr) {
-          this.sortingMatrix.push(nextArr);
-          if (nextArr[0].length == this.sortingMatrix[0].length) {
-            this.stop();
-            console.log(this.sortingMatrix);
-            this.elements = this.sortingMatrix[this.sortingMatrix.length-1][0];
-            break;
-     
           }
         }
+        if (x < arrFP.length) {
+          for (let h1 = x; h1 < arrFP.length; h1++) {
+
+            newPart.push(arrFP[h1]);
+          }
+        }
+        if (y < arrSP.length) {
+          for (let h1 = y; h1 < arrSP.length; h1++) {
+            newPart.push(arrSP[h1]);
+          }
+        }
+      } else {
+        newPart = arrFP;
+      }
+      nextArr.push(newPart);
+    }
+    if (nextArr) {
+      this.sortingMatrix.push(nextArr);
+      if (nextArr[0].length == this.sortingMatrix[0].length) {
+        this.stop();
+        console.log(this.elements, this.sortingMatrix);
+        return;
+      }
+
+      if (this.sortingMatrixIndex < this.sortingMatrix.length) {
+        this.sortingMatrixIndex++;
       }
     }
   }
@@ -359,6 +384,9 @@ class MergeSorting implements SortingAlgorithm {
     this.sortingMatrix = [];
     this.elements = [];
     this.init([]);
+    this.sortingMatrixIndex = 0;
+    this.logMsg = '';
+    this.tick = 0;
   }
   /**
    * @returns {boolean}
@@ -368,17 +396,25 @@ class MergeSorting implements SortingAlgorithm {
   }
 }
 
+
+/* Config */
+
 const config: Config = {
-  fps: 10,
+  fps: 1,
   algorithm: new MergeSorting(),
 };
 
+
+/* Actions */
+
+
 function handleStartButtonClicked(event: JQuery.ClickEvent): void {
   const randomNumbers = [];
-  for (let i = 20; i < 100; i++) {
+  for (let i = 20; i < 40; i++) {
     const randomNum = Math.ceil(Math.acos(Math.random()) * (i * 2));
     randomNumbers.push(randomNum);
   }
+  config.algorithm.reset();
   config.algorithm.init(randomNumbers);
   config.algorithm.start();
 }
@@ -404,6 +440,7 @@ function handleAlgorithmChanged(e: JQuery.ChangeEvent): void {
       break;
   }
 }
+
 
 $("#start_button").on("click", (e) => handleStartButtonClicked(e));
 $("#continue_button").on("click", (e) => handleContinueButtonClicked(e));
