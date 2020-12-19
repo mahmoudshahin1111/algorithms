@@ -20,8 +20,8 @@ class AlgorithmElement {
     return {
       content: this.getValue().toString(),
       pos: {
-        x: 430 - this.getX(),
-        y: 550 - this.getHeight()
+        x: 500 - this.getX() - this.getWidth(),
+        y: 500 - this.getHeight() - 10,
       }
     };
   }
@@ -144,7 +144,7 @@ class QuickSorting implements SortingAlgorithm {
     }, 1000 / config.fps);
   }
   draw() {
-    let html = "";
+    let html = `<text id="status" x="10" y="20" class="small">My</text>`;
     for (const el of this.elements) {
       const rect = `<rect id="${el.getId()}" style="fill:${el.getColor()}" x='${el.getX()}' y='${el.getY()}' width='${el.getWidth()}' height='${el.getHeight()}' data-value='${el.value
         }' data-height='${el.getHeight()}' data-width='${el.getWidth()}' class="alg_vector" />`;
@@ -289,7 +289,7 @@ class MergeSorting implements SortingAlgorithm {
     }, 1000 / config.fps);
   }
   draw() {
-    let html = "";
+    let html = `<text id="status" x="10" y="20" class="small">My</text>`;
     for (const el of this.elements) {
       const rect = `<rect id="${el.getId()}" style="fill:${el.getColor()}" x='${el.getX()}' y='${el.getY()}' width='${el.getWidth()}' height='${el.getHeight()}' data-value='${el.value
         }' data-height='${el.getHeight()}' data-width='${el.getWidth()}' class="alg_vector" />`;
@@ -417,18 +417,24 @@ function handleStartButtonClicked(event: JQuery.ClickEvent): void {
   config.algorithm.reset();
   config.algorithm.init(randomNumbers);
   config.algorithm.start();
+  $('#status').text('Running');
 }
 function handlePauseButtonClicked(event: JQuery.ClickEvent): void {
   config.algorithm.stop();
+  $('#status').text('Stopped');
 }
 function handleContinueButtonClicked(event: JQuery.ClickEvent): void {
   config.algorithm.run();
+  $('#status').text('Running');
 }
 function handleResetButtonClicked(event: JQuery.ClickEvent): void {
   config.algorithm.reset();
+  $('#status').text('Try');
 }
 function handleSpeedChanged(event: JQuery.ChangeEvent): void {
   config.fps = parseInt($(event.target).val().toString());
+  $('#status').text('Fps: '+ config.fps);
+  setTimeout(e=>$('#status').text(''),2000)
 }
 function handleAlgorithmChanged(e: JQuery.ChangeEvent): void {
   switch (e.target.value) {

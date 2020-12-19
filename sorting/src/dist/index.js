@@ -14,8 +14,8 @@ var AlgorithmElement = /** @class */ (function () {
             return {
                 content: this.getValue().toString(),
                 pos: {
-                    x: 430 - this.getX(),
-                    y: 550 - this.getHeight()
+                    x: 500 - this.getX() - this.getWidth(),
+                    y: 500 - this.getHeight() - 10
                 }
             };
         },
@@ -102,7 +102,7 @@ var QuickSorting = /** @class */ (function () {
         }, 1000 / config.fps);
     };
     QuickSorting.prototype.draw = function () {
-        var html = "";
+        var html = "<text id=\"status\" x=\"10\" y=\"20\" class=\"small\">My</text>";
         for (var _i = 0, _a = this.elements; _i < _a.length; _i++) {
             var el = _a[_i];
             var rect = "<rect id=\"" + el.getId() + "\" style=\"fill:" + el.getColor() + "\" x='" + el.getX() + "' y='" + el.getY() + "' width='" + el.getWidth() + "' height='" + el.getHeight() + "' data-value='" + el.value + "' data-height='" + el.getHeight() + "' data-width='" + el.getWidth() + "' class=\"alg_vector\" />";
@@ -229,7 +229,7 @@ var MergeSorting = /** @class */ (function () {
         }, 1000 / config.fps);
     };
     MergeSorting.prototype.draw = function () {
-        var html = "";
+        var html = "<text id=\"status\" x=\"10\" y=\"20\" class=\"small\">My</text>";
         for (var _i = 0, _a = this.elements; _i < _a.length; _i++) {
             var el = _a[_i];
             var rect = "<rect id=\"" + el.getId() + "\" style=\"fill:" + el.getColor() + "\" x='" + el.getX() + "' y='" + el.getY() + "' width='" + el.getWidth() + "' height='" + el.getHeight() + "' data-value='" + el.value + "' data-height='" + el.getHeight() + "' data-width='" + el.getWidth() + "' class=\"alg_vector\" />";
@@ -336,7 +336,7 @@ var MergeSorting = /** @class */ (function () {
 }());
 /* Config */
 var config = {
-    fps: 100,
+    fps: 1,
     algorithm: new MergeSorting()
 };
 /* Actions */
@@ -349,18 +349,24 @@ function handleStartButtonClicked(event) {
     config.algorithm.reset();
     config.algorithm.init(randomNumbers);
     config.algorithm.start();
+    $('#status').text('Running');
 }
 function handlePauseButtonClicked(event) {
     config.algorithm.stop();
+    $('#status').text('Stopped');
 }
 function handleContinueButtonClicked(event) {
     config.algorithm.run();
+    $('#status').text('Running');
 }
 function handleResetButtonClicked(event) {
     config.algorithm.reset();
+    $('#status').text('Try');
 }
 function handleSpeedChanged(event) {
     config.fps = parseInt($(event.target).val().toString());
+    $('#status').text('Fps: ' + config.fps);
+    setTimeout(function (e) { return $('#status').text(''); }, 2000);
 }
 function handleAlgorithmChanged(e) {
     switch (e.target.value) {

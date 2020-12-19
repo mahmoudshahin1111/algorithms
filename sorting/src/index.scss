@@ -6,21 +6,11 @@ body {
   overflow: hidden;
 }
 
-.wrapper {
-  overflow: auto;
+input[type=radio]{
+  color: aqua;
+  background-color: aquamarine;
 }
 
-#algorithm_svg {
-  width: 100%;
-  height: 100%;
-}
-
-.svg__container {
-  width: 600px;
-  height: 600px;
-
-
-}
 
 .alg_vector {
   stroke: white;
@@ -30,7 +20,7 @@ body {
 }
 
 .element__text {
-    transform-origin: center; 
+  transform-origin: center;
 }
 
 .buttons__container {
@@ -42,6 +32,7 @@ body {
   align-items: center;
 
 }
+
 .buttons__container .btn {
   width: 100%;
   max-width: 300px;
@@ -53,7 +44,7 @@ body {
   transform: scale(1.2);
 }
 
-.control__container{
+.control__container {
   position: relative;
   display: flex;
   flex-direction: row;

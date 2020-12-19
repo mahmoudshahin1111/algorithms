@@ -17,7 +17,9 @@
   <div class="container shadow-lg bg-gradient bg-secondary ">
     <div class="d-flex flex-row p-2 flex-nowrap text-white">
       <div class="svg__container shadow-lg border  border-dark">
-        <svg id="algorithm_svg"></svg>
+        <svg id="algorithm_svg" width="500px" height="500px">
+
+        </svg>
       </div>
       <div class="control__container position-relative shadow-md m-4">
 
@@ -26,7 +28,7 @@
           class=" w-100 flex-grow-1  d-flex justify-content-center align-items-center flex-column-reverse  shadow-lg list-unstyled m-0 p-0">
           <li>
             <div class="radio_content">
-              <label for="quick_sort">
+              <label for="quick_sort" class="text-warning">
                 QuickSort
                 <input type="radio" name="sort_type" value="quick_sort" />
               </label>
@@ -35,7 +37,7 @@
           </li>
           <li>
             <div class="radio_content">
-              <label for="quick_sort">
+              <label for="quick_sort" class="text-warning">
                 MargeSort
                 <input type="radio" name="sort_type" value="marge_sort" checked />
               </label>
@@ -44,8 +46,7 @@
           <li>
             <div class="form-group">
               <label for="range_fps">Fps :</label>
-              <input class="d-block" type="range" min="1" max="1000" value="5" step="1" lang="ar"
-                id="fps_control" />
+              <input class="d-block" type="range" min="1" max="1000" value="5" step="1" lang="ar" id="fps_control" />
             </div>
           </li>
         </ul>
