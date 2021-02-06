@@ -4,25 +4,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="this algorithms i apply for understanding how it works.">
-    <title>(CodeXline) Mahmoud Shahin - Algorithms</title>
+    <title>Mahmoud Shahin Algorithms</title>
+    <link href="http://fonts.cdnfonts.com/css/berlin-sans-fb-demi" rel="stylesheet">
     <style>
+        :root {
+            --swing-animate-vertical: 15px;
+            --swing-animate-horizontal: 15px;
+        }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 40px;
+            font-family: "Berlin Sans FB Demi";
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .page {
+            background-image: url("assets/bg.png");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        .pageContent {
+            width: 80%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .button {
+            position: absolute;
+            text-decoration: none;
+            color:white !important;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: -moz-linear-gradient(90deg, rgb(41, 241, 156) 0%, rgb(2, 161, 249) 100%);
+            background-image: -webkit-linear-gradient(90deg, rgb(41, 241, 156) 0%, rgb(2, 161, 249) 100%);
+            background-image: -ms-linear-gradient(90deg, rgb(41, 241, 156) 0%, rgb(2, 161, 249) 100%);
+            box-shadow: 0px 30px 64.4px 5.6px rgba(0, 0, 0, 0.3);
+            width: 160px;
+            height: 160px;
+            box-shadow: inset 0 0 30px rgb(241, 241, 241);
+            padding: 10px;
+            font-size: 0.5rem;
+        }
+
+        .button .content {
+            position: relative;
+            width: 65%;
+            height: 65%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button .icon {
+
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        .button .text {
+            font-weight: bold;
+            text-transform: uppercase;
+            line-height: 1.2;
+            text-align: center;
+            text-shadow: 0px 0px 50.19px rgba(0, 0, 0, 1);
+            position: absolute;
+            z-index: 2;
+        }
+
+        .button.pathway__button {
+            top: 5%;
+            left: 15%;
+
+
+        }
+
+        .icon.icon__pathway {
+            background-image: url("/assets/pathway.png");
+        }
+       
+        .button.sort__button {
+            top: 5%;
+            right: 15%;
+           
+
+        }
+        .button.collision__detection{
+            top: 1%;
+            right: auto;
+        }
+        .icon.icon__cdv{
+            background-image: url("/assets/forbidden.png");
+        }
+        .icon.icon__sort {
+            background-image: url("/assets/sort-descending.png");
+
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+
+            justify-content: center;
+            position: fixed;
+            bottom: 0;
+            margin-bottom: 1%;
+        }
+
+
+        .swing__animation {
+            animation: swing 4s ease-in alternate-reverse infinite;
+        }
+
+        .swing__animation.reversed {
+            animation: swing 5s ease-in alternate infinite;
+        }
+
+        @keyframes swing {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(0, var(--swing-animate-vertical));
+            }
+
+            50% {
+                transform: translate(var(--swing-animate-horizontal), var(--swing-animate-vertical));
+            }
+
+            75% {
+                transform: translate(0, - var(--swing-animate-vertical));
+            }
+
+            100% {
+                transform: translate(- var(--swing-animate-horizontal), var(--swing-animate-vertical));
+            }
+
+        }
+
+        @media (max-width:900px) {
+            :root {
+                --swing-animate-vertical: 5px;
+                --swing-animate-horizontal: 3px;
+            }
+
+            .pageContent {
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                width: 100%;
+                height: 100%;
+            }
+
+            .button {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                padding: 0;
+                width: 50% !important;
+                max-width: 130px;
+ 
+                height: 50% !important;
+                max-height: 130px;
+
+            }
+
+            .button .content {
+
+                width: 100%;
+                height: 100%;
+            }
+
+            .button .icon {
+                z-index: 1;
+                width: 50%;
+                height: 50%;
+
+            }
+
+            .footer {
+                z-index: 0;
+                top: 10px;
+                width: 25px;
+                height: 20px;
+                left: auto;
+
+            }
+        }
     </style>
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li>
-                <a href="path_finder_visual/src/index.html">Short Path Finder</a>
-                <a href="sorting/src/index.html">Sorting</a>
-                <a href="collision-detection/index.html">(Flash light) - Collision detection</a>
-                <a href="sorting/src/index.html">Sorting</a>
-                <a href="js-debouncing/index.html">Ball Denouncing</a>
-            </li>
-        </ul>
-    </nav>
+    <div class="page">
+        <div class="pageContent">
+            <a href="./path_finder_visual/src/index.html" class="button pathway__button swing__animation">
+                <span class="content">
+                    <span class="icon icon__pathway"></span>
+                    <p class="text">SPFV</p>
+
+                </span>
+            </a>
+            <a  href="./sorting/src/index.html" class="button sort__button swing__animation reversed">
+                <span class="content">
+                    <span class="icon icon__sort"></span>
+                    <p class="text">Sort</p>
+
+                </span>
+            </a>
+            <a  href="./collision-detection/index.html" class="button collision__detection  swing__animation reversed">
+                <span class="content">
+                    <span class="icon icon__cdv"></span>
+                    <p class="text">CDV</p>
+
+                </span>
+            </a>
+
+            <div class="footer">
+                <img src="./assets/ms.png" alt="">
+            </div>
+        </div>
+    </div>
+   
 </body>
 
 </html>
