@@ -2,11 +2,20 @@
 <html lang="en">
 
 <head>
+    <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mahmoud Shahin Algorithms</title>
-    <link href="http://fonts.cdnfonts.com/css/berlin-sans-fb-demi" rel="stylesheet">
+
     <style>
+        @font-face {
+            font-family: 'Berlin Sans FB Demi';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Berlin Sans FB Demi'), url('https://fonts.cdnfonts.com/s/13625/BRLNSDB.woff') format('woff');
+        }
+
+
         :root {
             --swing-animate-vertical: 15px;
             --swing-animate-horizontal: 15px;
@@ -55,7 +64,7 @@
         .button {
             position: absolute;
             text-decoration: none;
-            color:white !important;
+            color: white !important;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -114,24 +123,27 @@
         }
 
         .icon.icon__pathway {
-            background-image: url("assets/pathway.png");
+            background-image: url("./assets/pathway.png");
         }
-       
+
         .button.sort__button {
             top: 5%;
             right: 15%;
-           
+
 
         }
-        .button.collision__detection{
+
+        .button.collision__detection {
             top: 1%;
             right: auto;
         }
-        .icon.icon__cdv{
-            background-image: url("assets/forbidden.png");
+
+        .icon.icon__cdv {
+            background-image: url("./assets/forbidden.png");
         }
+
         .icon.icon__sort {
-            background-image: url("assets/sort-descending.png");
+            background-image: url("./assets/sort-descending.png");
 
         }
 
@@ -203,7 +215,7 @@
                 padding: 0;
                 width: 50% !important;
                 max-width: 130px;
- 
+
                 height: 50% !important;
                 max-height: 130px;
 
@@ -244,14 +256,14 @@
 
                 </span>
             </a>
-            <a  href="./sorting/src/index.html" class="button sort__button swing__animation reversed">
+            <a href="./sorting/src/index.html" class="button sort__button swing__animation reversed">
                 <span class="content">
                     <span class="icon icon__sort"></span>
                     <p class="text">Sort</p>
 
                 </span>
             </a>
-            <a  href="./collision-detection/index.html" class="button collision__detection  swing__animation reversed">
+            <a href="./collision-detection/index.html" class="button collision__detection  swing__animation reversed">
                 <span class="content">
                     <span class="icon icon__cdv"></span>
                     <p class="text">CDV</p>
@@ -264,7 +276,7 @@
             </div>
         </div>
     </div>
-   
+
 </body>
 
 </html>
